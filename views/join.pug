@@ -1,0 +1,25 @@
+extends layout.pug
+block content
+	.container.p-3
+		form(name="joinForm" method="post" action="/user/save" onsubmit="return joinSubmit(this);")
+			table.table.table-bordered
+				tbody
+					tr
+						td(style="width: 15%;") 아이디
+						td
+							input.form-control(type="text" name="userid" placeholder="아이디를 입력하세요.")
+					tr
+						td 패스워드
+						td
+							input.form-control(type="password" name="userpw")
+					tr
+						td 패스워드확인
+						td
+							input.form-control(type="password" name="userpw2")
+					tr
+						td 이름
+						td
+							input.form-control(type="text" name="username" placeholder="이름을 입력하세요.")
+			.m-3.text-center
+				button.btn.btn-primary(type="submit") 가입
+				button.btn.btn-danger(type="reset") 다시작성

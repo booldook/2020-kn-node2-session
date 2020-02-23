@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret: 'my Salt!@#$',
+  secret: 'mySalt!@#$',
   resave: false,
   saveUninitialized: true,
   store: new sessionStore()

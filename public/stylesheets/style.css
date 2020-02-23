@@ -1,8 +1,12 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.header {color: #f1f1f1;}
+.header a,
+.header a:link,
+.header a:visited,
+.header a:hover,
+.header a:active {
+  color: inherit;
 }
