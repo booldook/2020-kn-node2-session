@@ -7,18 +7,19 @@ block content
 			tbody
 				tr
 					td.p-3(style="width: 25%") 제목
-					td 제목
+					td= rs.title 
 				tr
 					td.p-3(style="width: 25%") 작성자
-					td 작성자
+					td= rs.writer
 				tr
 					td.p-3(style="width: 25%") 작성일
-					td 2020-02-23 15:33:33
+					td= rs.wdate
 				tr
 					td.p-3(style="width: 25%") 내용
 					td
-						span 본문내용
-						img.w-100(src="/uploads/2002/2002-1241234234-123.jpg")
+						p= rs.content
+						if realfile
+							img.w-100(src=`${rs.realfile}`)
 		.text-center
 			button.btn.btn-primary(onclick="location.href='/board';") 리스트
 			button.btn.btn-primary(onclick="location.href='/board/write/:id';") 수정

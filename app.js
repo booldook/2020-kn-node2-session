@@ -5,6 +5,7 @@ var dotenv = require('dotenv').config();
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var methodOverride = require('method-override');
 var sessionStore = require('session-file-store')(session);
 
 var indexRouter = require('./routes/index');
@@ -23,6 +24,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(methodOverride((req, res) => {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    let method = req.body._method
+    delete req.body._method
+    return method
+  }
+}));
+
 app.use(session({
   secret: process.env.salt,
   resave: true,
@@ -30,7 +40,13 @@ app.use(session({
   store: new sessionStore()
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use("/", express.static(path.join(__dirname, 'public')));
+app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
+app.use((req, res, next) => {
+  app.locals.userid = req.session.userid;
+  if(req.session.userid) next();
+  else res.redirect("/");
+})
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/board', boardRouter);

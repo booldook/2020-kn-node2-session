@@ -3,7 +3,7 @@ block content
 	.container
 		.alert.alert-dark.my-3
 			h4 글작성
-		form(name="boardForm" method="post" action="/board/save" onsubmit="return boardSubmit(this);")
+		form(name="boardForm" method="post" action="/board/save" onsubmit="return boardSubmit(this);" enctype="multipart/form-data")
 			table.table.table-bordered
 				tbody
 					tr

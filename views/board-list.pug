@@ -12,9 +12,11 @@ block content
 					th 작성일
 					th 조회수
 			tbody
-				tr
-					td 1
-					td 제목입니다.
-					td 홍길동
-					td 2020-02-23 15:33:34
-					td 1
+				each v in rs
+					tr
+						td= v.id
+						td
+							a(href=`/board/view/${v.id}`)= v.title
+						td= v.writer
+						td= v.wdate
+						td= v.rnum
