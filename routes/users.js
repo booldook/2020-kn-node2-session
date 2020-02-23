@@ -1,5 +1,6 @@
 var path = require('path');
 var express = require('express');
+var crypto = require('crypto');
 var router = express.Router();
 var { connect } = require(path.join(__dirname, '../modules/mysql-connect'));
 
@@ -20,11 +21,20 @@ router.get("/join", (req, res, next) => {
 
 router.post("/save", async (req, res, next) => {
   let {userid, userpw, username, createAt = new Date(), grade = 1} = req.body;
+  userpw = crypto.createHash('sha512').update(userpw + process.env.salt).digest('base64');
   let sql = 'INSERT INTO user SET userid=?, userpw=?, username=?, createAt=?, grade=?';
   let value = [userid, userpw, username, createAt, grade];
-  let result = await connect.execute(sql, value);
-  res.json(result);
-  //res.redirect("/user");
+  try {
+    let result = await connect.execute(sql, value);
+    res.redirect("/user");
+  }
+  catch(err) {
+    next(err);
+  }
+});
+
+router.post("/loginModule", (req, res, next) => {
+
 });
 
 module.exports = router;

@@ -1,0 +1,16 @@
+extends layout.pug
+block content
+	.container
+		form(name="loginForm" method="post" action="/user/loginModule")
+			table.table.table-bordered.w-50.mx-auto.mt-5
+				thead
+					tr
+						td.p-3.w-25 아이디
+						td.p-1
+							input.form-control(type="text" name="userid")
+					tr
+						td.p-3.w-25 패스워드
+						td.p-1
+							input.form-control(type="password" name="userpw")
+			.m-3.text-center
+				button.btn.btn-primary 로그인
