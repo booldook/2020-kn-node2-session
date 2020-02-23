@@ -33,8 +33,13 @@ router.post("/save", async (req, res, next) => {
   }
 });
 
-router.post("/loginModule", (req, res, next) => {
-
+router.post("/loginModule", async (req, res, next) => {
+  let {userid, userpw} = req.body;
+  userpw = crypto.createHash('sha512').update(userpw + process.env.salt).digest('base64');
+  let sql = 'SELECT * FROM user WHERE userid=? AND userpw=?';
+  let value = [userid, userpw];
+  let result = await connect.execute(sql, value);
+  res.json(result[0]);
 });
 
 module.exports = router;
