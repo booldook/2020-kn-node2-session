@@ -19,6 +19,12 @@ router.get("/join", (req, res, next) => {
   res.render('join.pug', values);
 });
 
+router.get("/logout", (req, res, next) => {
+  req.session.destroy((err) => {
+    res.redirect("/");
+  });
+})
+
 router.post("/save", async (req, res, next) => {
   let {userid, userpw, username, createAt = new Date(), grade = 1} = req.body;
   userpw = crypto.createHash('sha512').update(userpw + process.env.salt).digest('base64');
@@ -36,10 +42,22 @@ router.post("/save", async (req, res, next) => {
 router.post("/loginModule", async (req, res, next) => {
   let {userid, userpw} = req.body;
   userpw = crypto.createHash('sha512').update(userpw + process.env.salt).digest('base64');
-  let sql = 'SELECT * FROM user WHERE userid=? AND userpw=?';
+  let sql = 'SELECT userid, grade, username FROM user WHERE userid=? AND userpw=?';
   let value = [userid, userpw];
   let result = await connect.execute(sql, value);
-  res.json(result[0]);
+  if(result[0][0]) {
+    req.session.userid = result[0][0].userid;
+    req.session.username = result[0][0].username;
+    req.session.grade = result[0][0].grade;
+    res.redirect('/');
+  }
+  else {
+    res.send(`
+    <script>
+    alert("아이디와 패스워드를 확인하세요.");
+    location.href = '/';
+    </script>`);
+  }
 });
 
 module.exports = router;
