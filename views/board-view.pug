@@ -1,0 +1,25 @@
+extends layout.pug
+block content
+	.container
+		.alert.alert-dark.my-3
+			h4 상세보기
+		table.table.table-bordered
+			tbody
+				tr
+					td.p-3(style="width: 25%") 제목
+					td 제목
+				tr
+					td.p-3(style="width: 25%") 작성자
+					td 작성자
+				tr
+					td.p-3(style="width: 25%") 작성일
+					td 2020-02-23 15:33:33
+				tr
+					td.p-3(style="width: 25%") 내용
+					td
+						span 본문내용
+						img.w-100(src="/uploads/2002/2002-1241234234-123.jpg")
+		.text-center
+			button.btn.btn-primary(onclick="location.href='/board';") 리스트
+			button.btn.btn-primary(onclick="location.href='/board/write/:id';") 수정
+			button.btn.btn-primary(onclick="deleteData(3)") 삭제

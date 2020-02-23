@@ -10,3 +10,8 @@ body {
 .header a:active {
   color: inherit;
 }
+
+.board-list > thead > tr > :nth-child(1) {width: 10%;}
+.board-list > thead > tr > :nth-child(3) {width: 15%;}
+.board-list > thead > tr > :nth-child(4) {width: 15%;}
+.board-list > thead > tr > :nth-child(5) {width: 10%;}

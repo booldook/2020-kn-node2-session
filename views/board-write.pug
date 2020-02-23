@@ -1,0 +1,28 @@
+extends layout.pug
+block content
+	.container
+		.alert.alert-dark.my-3
+			h4 글작성
+		form(name="boardForm" method="post" action="/board/save" onsubmit="return boardSubmit(this);")
+			table.table.table-bordered
+				tbody
+					tr
+						td.p-3(style="width: 25%") 제목
+						td
+							input.form-control(type="text" name="title" value=`${btitle}` placeholder="제목을 입력하세요.")
+					tr
+						td.p-3(style="width: 25%") 작성자
+						td
+							input.form-control(type="text" name="writer" value=`${writer}` placeholder="작성자를 입력하세요.")
+					tr
+						td.p-3(style="width: 25%") 첨부파일
+						td
+							input.form-control-file(type="file" name="file")
+							p= file
+					tr
+						td.p-3(style="width: 25%") 내용
+						td
+							textarea.form-control(name="content")= content
+			.text-center
+				button.btn.btn-primary 저장
+				button.btn.btn-danger(type="reset") 다시작성
