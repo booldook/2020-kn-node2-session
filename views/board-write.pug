@@ -3,26 +3,30 @@ block content
 	.container
 		.alert.alert-dark.my-3
 			h4 글작성
-		form(name="boardForm" method="post" action="/board/save" onsubmit="return boardSubmit(this);" enctype="multipart/form-data")
-			table.table.table-bordered
+		form(name="boardForm" method="post" action="/board/save" onsubmit="return onSubmit(this);"
+			enctype="multipart/form-data")
+			input(type="hidden" name="id" value=`${rs.id}`)
+			table.write-tb.table.table-bordered
 				tbody
 					tr
-						td.p-3(style="width: 25%") 제목
+						td.p-3.title 제목
 						td
-							input.form-control(type="text" name="title" value=`${btitle}` placeholder="제목을 입력하세요.")
+							input.form-control(type="text" name="title" value=`${rs.title}` placeholder="제목을 입력하세요.")
 					tr
-						td.p-3(style="width: 25%") 작성자
+						td.p-3.title 작성자
 						td
-							input.form-control(type="text" name="writer" value=`${writer}` placeholder="작성자를 입력하세요.")
+							input.form-control(type="text" name="writer" value=`${rs.writer}` placeholder="작성자를 입력하세요.")
 					tr
-						td.p-3(style="width: 25%") 첨부파일
+						td.p-3.title 첨부파일
 						td
 							input.form-control-file(type="file" name="file")
-							p= file
+							if rs.realfile
+								p.pt-2= rs.realfile
+									i.bt-rev-file.fa.fa-times(data-file=`${rs.savefile}` data-id=`${rs.id}`)
 					tr
-						td.p-3(style="width: 25%") 내용
+						td.p-3.title 내용
 						td
-							textarea.form-control(name="content")= content
+							textarea.form-control(name="content")= rs.content
 			.text-center
 				button.btn.btn-primary 저장
 				button.btn.btn-danger(type="reset") 다시작성

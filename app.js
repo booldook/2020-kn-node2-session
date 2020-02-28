@@ -1,52 +1,65 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var dotenv = require('dotenv').config();
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var session = require('express-session');
-var methodOverride = require('method-override');
-var sessionStore = require('session-file-store')(session);
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const dotenv = require('dotenv').config();
+const cookieParser = require('cookie-parser');
+const redis = require('redis');
+const logger = require('morgan');
+const session = require('express-session');
+const redisStore = require('connect-redis')(session);
+const methodOverride = require('method-override');
+// const sessionStore = require('session-file-store')(session);
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var boardRouter = require('./routes/board');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const boardRouter = require('./routes/board');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.locals.pretty = true; 
-app.set('trust proxy', 1);
+app.locals.pretty = true;
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(methodOverride((req, res) => {
-  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-    // look in urlencoded POST bodies and delete it
-    let method = req.body._method
-    delete req.body._method
-    return method
-  }
-}));
-
+// session - redis
+const redisConfig = {
+	"host": "localhost",
+	"port": 6379,
+	"prefix": "session:",
+	"db": 0,
+	"client": redis.createClient(6379, "localhost")
+};
 app.use(session({
   secret: process.env.salt,
-  resave: true,
+  resave: false,
   saveUninitialized: true,
-  store: new sessionStore()
+  store: new redisStore(redisConfig)
 }));
+
+
+app.use(methodOverride((req, res) => {
+	if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+		// look in urlencoded POST bodies and delete it
+		let method = req.body._method;
+		delete req.body._method;
+		return method;
+	}
+}));
+
 
 app.use("/", express.static(path.join(__dirname, 'public')));
 app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
-app.use((req, res, next) => {
-  app.locals.userid = req.session.userid;
-  if(req.session.userid) next();
-  else res.redirect("/");
-})
+
+app.use(/^(?!\/user).+/, (req, res, next) => {
+	console.log("BASE: ", req.baseUrl);
+	if(req.session.userid) next();
+	else res.redirect('/user/login');
+});
+
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/board', boardRouter);

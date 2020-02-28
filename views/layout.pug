@@ -1,10 +1,12 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css')
-    link(rel='stylesheet' href='/stylesheets/style.css')
-    script(src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous")
-  body
-    include top.pug
-    block content
+	head
+		title= title
+		link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+		link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css')
+		link(rel='stylesheet' href='/stylesheets/style.css')
+		script(src="https://code.jquery.com/jquery-3.4.1.min.js")
+	body.pb-5
+		include top.pug
+		block content
+		script(src="/javascripts/board.js")

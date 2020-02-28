@@ -1,0 +1,46 @@
+mixin first
+	a.page-link(href=`/board/list/${ pager.first }`)
+		i.fa.fa-angle-double-left
+mixin last
+	a.page-link(href=`/board/list/${ pager.last }`)
+		i.fa.fa-angle-double-right
+mixin prev
+	a.page-link(href=`/board/list/${ pager.prev }`)
+		i.fa.fa-angle-left
+mixin next
+	a.page-link(href=`/board/list/${ pager.next }`)
+		i.fa.fa-angle-right
+
+nav.my-5
+	ul.pagination.justify-content-center
+		if pager.first > 0
+			li.page-item
+				+first
+		else
+			li.page-item.disabled
+				+first
+		if pager.prev > 0
+			li.page-item
+				+prev
+		else
+			li.page-item.disabled
+				+prev
+		- for(let i=pager.std; i<=pager.end; i++)
+			if pager.page == i
+				li.page-item.active
+					a.page-link(href=`/board/list/${ i }`)= i
+			else
+				li.page-item
+					a.page-link(href=`/board/list/${ i }`)= i
+		if pager.next > 0
+			li.page-item
+				+next
+		else
+			li.page-item.disabled
+				+next
+		if pager.last > 0
+			li.page-item
+				+last
+		else
+			li.page-item.disabled
+				+last

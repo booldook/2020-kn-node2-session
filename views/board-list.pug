@@ -3,7 +3,7 @@ block content
 	.container
 		.alert.alert-dark.my-3
 			h4 리스트
-		table.board-list.table.table-bordered
+		table.list-tb.table.table-bordered
 			thead.thead-dark
 				tr
 					th 번호
@@ -20,3 +20,4 @@ block content
 						td= v.writer
 						td= v.wdate
 						td= v.rnum
+		include pager.pug

@@ -3,24 +3,30 @@ block content
 	.container
 		.alert.alert-dark.my-3
 			h4 상세보기
-		table.table.table-bordered
+		table.view-tb.table.table-bordered
 			tbody
 				tr
-					td.p-3(style="width: 25%") 제목
-					td= rs.title 
+					td.title.p-3 제목
+					td= rs.title
 				tr
-					td.p-3(style="width: 25%") 작성자
+					td.title.p-3 작성자
 					td= rs.writer
 				tr
-					td.p-3(style="width: 25%") 작성일
+					td.title.p-3 작성일
 					td= rs.wdate
 				tr
-					td.p-3(style="width: 25%") 내용
+					td.title.p-3 내용
 					td
 						p= rs.content
-						if realfile
-							img.w-100(src=`${rs.realfile}`)
+						if rs.savefile
+							img.my-2.w-100(src=`${rs.savefile}`)
+				tr
+					td.title.p-3 첨부파일
+					td
+						a(href=`/board/download/${rs.downfile}`)= rs.realfile
 		.text-center
-			button.btn.btn-primary(onclick="location.href='/board';") 리스트
-			button.btn.btn-primary(onclick="location.href='/board/write/:id';") 수정
-			button.btn.btn-primary(onclick="deleteData(3)") 삭제
+			button.btn.btn-primary(onclick="location.href='/board'") 리스트
+			if userid == rs.writer_id
+				button.btn.btn-success(onclick=`location.href='/board/write/${rs.id}'`) 수정
+				button.btn.btn-danger(onclick=`deleteData(${rs.id})`) 삭제
+

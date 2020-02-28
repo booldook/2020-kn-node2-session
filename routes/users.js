@@ -2,13 +2,13 @@ var path = require('path');
 var express = require('express');
 var crypto = require('crypto');
 var router = express.Router();
-var { connect } = require(path.join(__dirname, '../modules/mysql-connect'));
+var { connect } = require(path.join(__dirname, '../modules/mysql'));
 
 /* GET users listing. */
 router.get(['/', '/login'], (req, res, next) => {
   const values = {
     title: "로그인"
-  }
+  };
   res.render('login.pug', values);
 });
 
@@ -21,9 +21,12 @@ router.get("/join", (req, res, next) => {
 
 router.get("/logout", (req, res, next) => {
   req.session.destroy((err) => {
+	  req.app.locals.userid = '';
+	  req.app.locals.username = '';
+	  req.app.locals.grade = '';
     res.redirect("/");
   });
-})
+});
 
 router.post("/save", async (req, res, next) => {
   let {userid, userpw, username, createAt = new Date(), grade = 1} = req.body;
@@ -49,6 +52,9 @@ router.post("/loginModule", async (req, res, next) => {
     req.session.userid = result[0][0].userid;
     req.session.username = result[0][0].username;
     req.session.grade = result[0][0].grade;
+    req.app.locals.userid = req.session.userid;
+    req.app.locals.username = req.session.username;
+    req.app.locals.grade = req.session.grade;
     res.redirect('/');
   }
   else {
