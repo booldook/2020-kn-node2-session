@@ -106,7 +106,7 @@ router.get('/remove', (req, res, next) => {
 
 router.get("/download/:file", (req, res, next) => {
 	const file = req.params.file;
-	const filename = getLink(file);
+	const filename = getLink(file); //절대경로로 써야됨
 	res.download(filename);
 })
 

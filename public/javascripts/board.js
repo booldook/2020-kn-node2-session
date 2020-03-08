@@ -17,7 +17,7 @@ function onSubmit(f) {
 	return true;
 }
 
-$(".bt-rev-file").click(function onRevFile() {
+$(".bt-rev-file").click(function () {
 	if(confirm("정말로 삭제하시겠습니까?")) {
 		var id = $(this).data("id");
 		var file = $(this).data("file");

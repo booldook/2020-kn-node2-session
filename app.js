@@ -2,13 +2,13 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv').config();
-const cookieParser = require('cookie-parser');
-const redis = require('redis');
 const logger = require('morgan');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const redis = require('redis');
 const redisStore = require('connect-redis')(session);
-const methodOverride = require('method-override');
 // const sessionStore = require('session-file-store')(session);
+const methodOverride = require('method-override');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -20,6 +20,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.locals.pretty = true;
+app.locals.titleDef = "게시판";
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -54,6 +55,7 @@ app.use(methodOverride((req, res) => {
 app.use("/", express.static(path.join(__dirname, 'public')));
 app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
 
+// /user* 를 제외한 모든 접근을 허용하는 미들웨어
 app.use(/^(?!\/user).+/, (req, res, next) => {
 	console.log("BASE: ", req.baseUrl);
 	if(req.session.userid) next();
